@@ -1,20 +1,19 @@
 <script lang=ts>
 	import Button from './Button.svelte'
 	import { onMount } from 'svelte';
-	import { merge, bufferWhen, timer, interval } from 'rxjs'
+	import { merge, fromEvent, bufferToggle, filter, interval, timestamp, pairwise } from 'rxjs'
+	import { throttle } from 'rxjs/operators';
+	
+	
 	let a = Array(3)
 	let b
 
 	onMount(() => {
 		const obs = a.map(i => i.observable)
 
-		merge(...obs)
-		.pipe(bufferWhen(() =>
-			b.observable
-			// interval(1000)
-		))
-		.subscribe((d) => console.log(d))
-		
+		const clicks = merge(...obs)
+		const result = clicks.pipe(throttle(ev => interval(1000)));
+		result.subscribe(x => console.log(x));
 	})
 
 
