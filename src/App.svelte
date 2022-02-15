@@ -2,7 +2,7 @@
 	import Button from './Button.svelte'
 	import { onMount } from 'svelte';
 	import { merge, fromEvent, bufferToggle, filter, interval, timestamp, pairwise } from 'rxjs'
-	import { throttle } from 'rxjs/operators';
+	import { delay, throttle } from 'rxjs/operators';
 	
 	
 	let a = Array(3)
@@ -12,7 +12,7 @@
 		const obs = a.map(i => i.observable)
 
 		const clicks = merge(...obs)
-		const result = clicks.pipe(throttle(ev => interval(1000)));
+		const result = clicks.pipe(throttle(ev => interval(1000)), delay(1000));
 		result.subscribe(x => console.log(x));
 	})
 
