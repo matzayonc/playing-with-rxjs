@@ -1,20 +1,25 @@
 <script lang=ts>
 	import Button from './Button.svelte'
 	import { onMount } from 'svelte';
-
-	let obs = Array(5)
+	import { merge, bufferTime } from 'rxjs'
+	let a = Array(3)
 
 
 	onMount(() => {
-		obs.map(i => i.observable.subscribe(() => console.log('licks')))
+		const obs = a.map(i => i.observable)
+
+		merge(...obs)
+		.pipe(bufferTime(1000))
+		.subscribe((d) => console.log(d))
+		
 	})
 
 
 </script>
 <main>
-	<Button bind:this={obs[1]} name=first/>
-	<Button bind:this={obs[2]} name=second/>
-	<Button bind:this={obs[3]} name=third/>
+	<Button bind:this={a[0]} name=first/>
+	<Button bind:this={a[1]} name=second/>
+	<Button bind:this={a[2]} name=third/>
 </main>
 
 <style>

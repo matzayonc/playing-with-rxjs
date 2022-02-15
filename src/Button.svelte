@@ -5,7 +5,7 @@
 	export const observable = new Observable(subscriber => 
 
 	document.addEventListener("DOMContentLoaded", function() {
-		document.getElementById(name).addEventListener('click', _ => subscriber.next())
+		document.getElementById(name).addEventListener('click', _ => subscriber.next(name))
 	}))
 
 </script>
